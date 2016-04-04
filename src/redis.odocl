@@ -1,9 +1,10 @@
 # OASIS_START
-# DO NOT EDIT (digest: 8f58f5cf74c9d3e84085b0284bc23c77)
+# DO NOT EDIT (digest: 65750ad05e73027e724c8faf617e3539)
 Redis_sync
 S
 Utils
 Client
 Cache
 Mutex
+Pool
 # OASIS_STOP

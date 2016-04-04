@@ -13,7 +13,7 @@ Library redis
   Path: src
   Findlibname: redis
   Pack: true
-  Modules: Redis_sync, S, Utils, Client, Cache, Mutex
+  Modules: Redis_sync, S, Utils, Client, Cache, Mutex, Pool
   BuildDepends: re.str, uuidm
 
 Flag lwt
