@@ -6,12 +6,17 @@
   (libraries (redis oUnit))))
 
 (executables
- ((libraries (redis_test redis_sync redis_lwt))
-  (names (test_sync test_lwt))))
+ ((libraries (redis_test redis_sync redis_lwt redis_async))
+  (names (test_sync test_lwt test_async))))
 
 (alias
  ((name   runtest)
   (deps   (test_lwt.exe))
+  (action (run ${<}))))
+
+(alias
+ ((name   runtest)
+  (deps   (test_async.exe))
   (action (run ${<}))))
 
 (alias
