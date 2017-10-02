@@ -4,4 +4,4 @@
  ((name redis_async)
   (wrapped false)
   (public_name redis-async)
-  (libraries (redis lwt.unix async))))
+  (libraries (redis async))))

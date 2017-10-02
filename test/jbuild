@@ -3,23 +3,38 @@
 (library
  ((name redis_test)
   (modules test)
+  (wrapped false)
   (libraries (redis oUnit))))
 
-(executables
- ((libraries (redis_test redis_sync redis_lwt redis_async))
-  (names (test_sync test_lwt test_async))))
+(executable
+  ((name test_sync)
+   (libraries (redis_test redis_sync))
+   (modules (test_sync))))
+
+(executable
+  ((name test_lwt)
+   (libraries (redis_test redis_lwt))
+   (modules (test_lwt))))
+
+(executable
+  ((name test_async)
+   (libraries (redis_test redis_async))
+   (modules (test_async))))
 
 (alias
- ((name   runtest)
-  (deps   (test_lwt.exe))
+ ((name runtest)
+  (deps (test_lwt.exe))
+  (package redis-lwt)
   (action (run ${<}))))
 
 (alias
- ((name   runtest)
-  (deps   (test_async.exe))
+ ((name runtest)
+  (deps (test_async.exe))
+  (package redis-async)
   (action (run ${<}))))
 
 (alias
  ((name   runtest)
   (deps   (test_sync.exe))
+  (package redis-sync)
   (action (run ${<}))))

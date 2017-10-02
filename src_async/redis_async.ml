@@ -58,14 +58,14 @@ module IO = struct
 
   let (>>=) = (>>=)
   let catch f on_error =
-    try_with ~extract_exn:true f >>= function
-    | Result.Ok v -> return v
-    | Result.Error exn -> on_error exn
+    Monitor.try_with ~extract_exn:true f >>= function
+    | Ok v -> return v
+    | Error exn -> on_error exn
 
   let try_bind t f g =
     Monitor.try_with ~extract_exn:true t >>= function
-    | Result.Ok v -> f v
-    | Result.Error ex -> g ex
+    | Ok v -> f v
+    | Error ex -> g ex
 
   let ignore_result d =
     (* not quite correct since it does not pass exception to async_exception_hook *)
