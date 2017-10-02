@@ -21,5 +21,6 @@ depends: [
   "redis"
   "base-unix"
   "async" {>="v0.9"}
+  "lwt" {test}
 ]
 available: [ocaml-version >= "4.02.3"]
