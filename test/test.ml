@@ -65,8 +65,9 @@ module Make(Client : Redis.S.Client) = struct
 
   (* ECHO *)
   let test_case_echo conn =
-    Client.echo conn "ECHO" >>=
-    io_assert "Can't echo to Redis server" ((=) (Some "ECHO"))
+    let message = "Hello World" in
+    Client.echo conn message >>=
+    io_assert "Can't echo to Redis server" ((=) (Some message))
 
   (* INFO *)
   let test_case_info conn =
