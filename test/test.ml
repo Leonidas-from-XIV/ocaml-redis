@@ -486,6 +486,18 @@ module Make(Client : Redis.S.Client) = struct
     Client.zremrangebylex conn key NegInfinity PosInfinity >>=
     io_assert "removed wrong number of items" ((=) 2)
 
+  let test_parallel_queries conn =
+    let rec create_list = function
+      | 0 -> []
+      | n -> (redis_string_bucket (), string_of_int n)::(create_list (n - 1))
+    in
+    let elements = create_list 1000 in
+    IO.iter_serial (fun (key, value) -> Client.set conn key value >>= fun _ -> IO.return ()) elements >>= fun () ->
+    IO.iter (fun (key, value) ->
+      Client.get conn key >>= fun v ->
+      assert_equal ~msg:"wrong value retrieved" ~printer:(function | None -> "<None>" | Some x -> x) (Some value) v;
+      IO.return ()) elements
+
   let cleanup_keys conn =
     Client.keys conn "ounit_*" >>= fun keys ->
     Client.del conn keys >>= fun _ ->
@@ -541,6 +553,7 @@ module Make(Client : Redis.S.Client) = struct
         "test_case_hyper_log_log" >:: (bracket test_case_hyper_log_log);
         "test_case_sorted_set" >:: (bracket test_case_sorted_set);
         "test_case_sorted_set_remove" >:: (bracket test_case_sorted_set_remove);
+        "test_parallel_queries" >:: (bracket test_parallel_queries);
       ] in
     Random.self_init ();
     let res = run_test_tt suite in
